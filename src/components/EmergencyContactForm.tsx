@@ -16,6 +16,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Trash2 } from 'lucide-react';
 
+// Define the contact type
+export type Contact = {
+  name: string;
+  phone: string;
+  relation: string;
+};
+
 // Schema for form validation
 const contactSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
@@ -26,8 +33,8 @@ const contactSchema = z.object({
 type ContactFormValues = z.infer<typeof contactSchema>;
 
 interface EmergencyContactFormProps {
-  contacts: Array<{ name: string; phone: string; relation: string }>;
-  setContacts: React.Dispatch<React.SetStateAction<Array<{ name: string; phone: string; relation: string }>>>;
+  contacts: Contact[];
+  setContacts: React.Dispatch<React.SetStateAction<Contact[]>>;
 }
 
 const EmergencyContactForm: React.FC<EmergencyContactFormProps> = ({ contacts, setContacts }) => {

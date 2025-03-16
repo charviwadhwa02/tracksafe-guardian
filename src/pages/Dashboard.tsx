@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import EmergencyContactForm from '@/components/EmergencyContactForm';
+import EmergencyContactForm, { Contact } from '@/components/EmergencyContactForm';
 import LocationTracker from '@/components/LocationTracker';
 import NearbyHospitals from '@/components/NearbyHospitals';
 import AccidentDetection from '@/components/AccidentDetection';
@@ -12,7 +12,7 @@ const Dashboard = () => {
   const { toast } = useToast();
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [isTracking, setIsTracking] = useState(false);
-  const [contacts, setContacts] = useState<Array<{ name: string; phone: string; relation: string }>>([]);
+  const [contacts, setContacts] = useState<Contact[]>([]);
   
   // Load saved contacts from localStorage on mount
   useEffect(() => {

@@ -1,12 +1,14 @@
+
 import React, { useState, useEffect } from 'react';
 import { AlertTriangle, AlertCircle, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { Contact } from './EmergencyContactForm';
 
 interface AccidentDetectionProps {
   isTracking: boolean;
   location: { lat: number; lng: number } | null;
-  contacts: Array<{ name: string; phone: string; relation: string }>;
+  contacts: Contact[];
 }
 
 const AccidentDetection: React.FC<AccidentDetectionProps> = ({
