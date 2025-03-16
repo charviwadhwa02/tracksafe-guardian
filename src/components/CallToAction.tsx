@@ -1,47 +1,62 @@
 
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { Shield, Heart, MapPin } from 'lucide-react';
 
 const CallToAction = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current) return;
-      
-      const rect = sectionRef.current.getBoundingClientRect();
-      if (rect.top < window.innerHeight * 0.75) {
-        sectionRef.current.classList.add('animate-fade-in');
-      }
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial check
-    
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-  
   return (
-    <section className="py-20 md:py-32 bg-tracksafe-gray-100">
-      <div ref={sectionRef} className="container-section opacity-0 transition-opacity duration-1000">
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-primary to-tracksafe-blue p-10 md:p-16">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+    <section className="py-20 md:py-32 bg-gradient-to-b from-background to-primary/5">
+      <div className="container-section">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="heading-lg mb-6">Ready to Experience Peace of Mind?</h2>
+          <p className="body-lg mb-8 max-w-2xl mx-auto">
+            Join thousands of users who trust TrackSafe for their safety and health monitoring needs. 
+            Try our web dashboard today and see how TrackSafe can protect you and your loved ones.
+          </p>
           
-          <div className="relative z-10 max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
-              Ready to Experience Peace of Mind?
-            </h2>
-            <p className="text-lg md:text-xl text-white/90 mb-8">
-              Join thousands of users who trust TrackSafe to keep them safe and healthy every day.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button size="lg" variant="default" className="bg-white text-primary hover:bg-white/90 rounded-full">
-                Get TrackSafe Now
+          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
+            <Link to="/dashboard">
+              <Button size="lg" className="rounded-full">
+                Try the Dashboard
               </Button>
-              <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10 rounded-full">
-                Contact Sales
+            </Link>
+            <a href="#features">
+              <Button variant="outline" size="lg" className="rounded-full">
+                Learn More
               </Button>
+            </a>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-border">
+              <div className="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10">
+                <Shield className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Accident Protection</h3>
+              <p className="text-muted-foreground">
+                Automatic detection and response when accidents happen.
+              </p>
+            </div>
+            
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-border">
+              <div className="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10">
+                <Heart className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Health Monitoring</h3>
+              <p className="text-muted-foreground">
+                Keep track of vital signs and receive alerts for irregularities.
+              </p>
+            </div>
+            
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-border">
+              <div className="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10">
+                <MapPin className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Location Sharing</h3>
+              <p className="text-muted-foreground">
+                Emergency contacts receive your exact location when you need help.
+              </p>
             </div>
           </div>
         </div>
