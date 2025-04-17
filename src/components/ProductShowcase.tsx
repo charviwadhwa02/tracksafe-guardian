@@ -45,7 +45,7 @@ const ProductShowcase = () => {
       );
       
       if (scrollPercentage > 0.1) {
-        showcaseRef.current.classList.add('animate-fade-in');
+        showcaseRef.current.style.opacity = "1";
       }
     };
     
@@ -68,13 +68,19 @@ const ProductShowcase = () => {
         
         <div 
           ref={showcaseRef}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center opacity-0"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center"
+          style={{
+            opacity: "0",
+            transition: "opacity 0.8s ease-out"
+          }}
         >
           {/* Product image */}
           <div className="relative">
             <div className="absolute -z-10 w-full h-full top-1/4 blur-3xl bg-primary/20 rounded-full"></div>
             <div className="bg-gradient-to-b from-white to-tracksafe-gray-100 rounded-3xl p-12 md:p-16 flex items-center justify-center">
-              <div className="relative w-48 h-48 md:w-64 md:h-64 animate-float">
+              <div className="relative w-48 h-48 md:w-64 md:h-64" style={{
+                animation: "float 6s ease-in-out infinite"
+              }}>
                 <div className="absolute inset-0 bg-white rounded-full shadow-2xl"></div>
                 <div className="absolute inset-2 bg-tracksafe-gray-200 rounded-full flex items-center justify-center">
                   <div className="w-3/4 h-3/4 bg-tracksafe-gray-100 rounded-full border-4 border-white flex items-center justify-center">
@@ -89,12 +95,12 @@ const ProductShowcase = () => {
           
           {/* Features carousel */}
           <div className="space-y-8">
-            <div className="h-40">
+            <div className="h-40 relative">
               {features.map((feature, index) => (
                 <div 
                   key={index}
                   className={cn(
-                    "transition-all duration-500 absolute w-full",
+                    "absolute w-full transition-all duration-500",
                     index === currentIndex 
                       ? "opacity-100 translate-y-0" 
                       : "opacity-0 translate-y-10 pointer-events-none"
@@ -115,6 +121,7 @@ const ProductShowcase = () => {
                     "w-3 h-3 rounded-full transition-all duration-300",
                     index === currentIndex ? "bg-primary scale-125" : "bg-tracksafe-gray-300"
                   )}
+                  aria-label={`Go to feature ${index + 1}`}
                 />
               ))}
             </div>

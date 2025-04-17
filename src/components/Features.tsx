@@ -39,17 +39,19 @@ const Features = () => {
       const statsRect = stats.getBoundingClientRect();
       
       if (featureRect.top < window.innerHeight * 0.8) {
-        features.classList.add('animate-fade-up');
+        features.style.opacity = "1";
+        features.style.transform = "translateY(0)";
       }
       
       if (statsRect.top < window.innerHeight * 0.8) {
-        stats.classList.add('animate-fade-in');
+        stats.style.opacity = "1";
         
         // Apply staggered animation to stats items
         const items = stats.querySelectorAll('.stat-item');
         items.forEach((item, index) => {
-          (item as HTMLElement).style.animationDelay = `${index * 0.2}s`;
-          item.classList.add('animate-scale-in');
+          setTimeout(() => {
+            item.classList.add('animate-scale-in');
+          }, index * 200);
         });
       }
     };
@@ -73,7 +75,12 @@ const Features = () => {
         
         <div 
           ref={featuresRef}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20 opacity-0"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20"
+          style={{
+            opacity: "0",
+            transform: "translateY(30px)",
+            transition: "opacity 0.6s ease-out, transform 0.6s ease-out"
+          }}
         >
           <Feature 
             icon={<Shield className="h-6 w-6" />}
@@ -99,7 +106,11 @@ const Features = () => {
         
         <div 
           ref={statsRef}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 opacity-0"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+          style={{
+            opacity: "0",
+            transition: "opacity 0.8s ease-out"
+          }}
         >
           <div className="stat-item p-6 rounded-2xl bg-white border border-border shadow-sm text-center">
             <p className="text-sm text-muted-foreground uppercase tracking-wider mb-2">Response Time</p>

@@ -29,15 +29,17 @@ const Index = () => {
     return () => document.removeEventListener('click', handleSmoothScroll);
   }, []);
 
-  // Create a subtle parallax effect on scroll
+  // Create a more stable parallax effect on scroll
   useEffect(() => {
     const handleParallaxEffect = () => {
       const scrollY = window.scrollY;
       const parallaxElements = document.querySelectorAll('.parallax-scroll');
       
       parallaxElements.forEach((element) => {
-        const speed = parseFloat((element as HTMLElement).dataset.speed || '0');
-        (element as HTMLElement).style.transform = `translateY(${scrollY * speed}px)`;
+        const speed = parseFloat((element as HTMLElement).dataset.speed || '0.1');
+        // Limit the transform to avoid excessive movement
+        const transformValue = Math.min(scrollY * speed, 100);
+        (element as HTMLElement).style.transform = `translateY(${transformValue}px)`;
       });
     };
     

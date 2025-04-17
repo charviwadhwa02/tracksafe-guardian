@@ -18,7 +18,10 @@ const Hero = () => {
       const elements = containerRef.current.querySelectorAll('.parallax-element');
       elements.forEach((el) => {
         const speed = parseFloat((el as HTMLElement).dataset.speed || '0');
-        (el as HTMLElement).style.transform = `translate(${-x * 20 * speed}px, ${-y * 20 * speed}px)`;
+        // Limit the transform to avoid excessive movement
+        const moveX = Math.min(Math.abs(x * 20 * speed), 15) * (x > 0 ? 1 : -1);
+        const moveY = Math.min(Math.abs(y * 20 * speed), 15) * (y > 0 ? 1 : -1);
+        (el as HTMLElement).style.transform = `translate(${moveX}px, ${moveY}px)`;
       });
     };
     
