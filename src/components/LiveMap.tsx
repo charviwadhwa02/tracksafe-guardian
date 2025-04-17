@@ -15,24 +15,37 @@ const LiveMap: React.FC<LiveMapProps> = ({ location, isTracking }) => {
   const [mapLoaded, setMapLoaded] = useState(false);
   const [mapError, setMapError] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(15);
+  const [mapImageUrl, setMapImageUrl] = useState('');
 
   useEffect(() => {
-    // Simulating a map load
+    // Generate map URL when location changes
     if (isTracking && location) {
-      const timer = setTimeout(() => {
-        setMapLoaded(true);
-      }, 1000);
-      
-      return () => clearTimeout(timer);
+      try {
+        // Using Mapbox static API for simplicity
+        const mapUrl = `https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${location.lng},${location.lat},${zoomLevel},0/600x400@2x?access_token=pk.eyJ1IjoiZGVtb21hcCIsImEiOiJjbGZvdjlhbWIwMjJ6M3RydnV0NTl0ZXlwIn0.0ZlQIzZ7FzXEQKd3QXB9zw`;
+        setMapImageUrl(mapUrl);
+        
+        const timer = setTimeout(() => {
+          setMapLoaded(true);
+        }, 500);
+        
+        return () => clearTimeout(timer);
+      } catch (error) {
+        console.error("Map loading error:", error);
+        setMapError(true);
+      }
+    } else {
+      setMapLoaded(false);
+      setMapImageUrl('');
     }
-  }, [isTracking, location]);
+  }, [isTracking, location, zoomLevel]);
   
   const handleZoomIn = () => {
-    setZoomLevel(Math.min(zoomLevel + 1, 20));
+    setZoomLevel(prev => Math.min(prev + 1, 20));
   };
   
   const handleZoomOut = () => {
-    setZoomLevel(Math.max(zoomLevel - 1, 5));
+    setZoomLevel(prev => Math.max(prev - 1, 5));
   };
   
   const handleRecenter = () => {
@@ -98,8 +111,18 @@ const LiveMap: React.FC<LiveMapProps> = ({ location, isTracking }) => {
           </div>
         ) : (
           <>
-            {/* Simulated map */}
-            <div className={`absolute inset-0 bg-[url('https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${location.lng},${location.lat},${zoomLevel},0/600x400?access_token=pk.eyJ1IjoiZGVtb21hcCIsImEiOiJjbGZvdjlhbWIwMjJ6M3RydnV0NTl0ZXlwIn0.0ZlQIzZ7FzXEQKd3QXB9zw')] bg-cover bg-center transition-opacity duration-500 ${mapLoaded ? 'opacity-100' : 'opacity-0'}`}></div>
+            {/* Map image */}
+            {mapImageUrl && (
+              <div className={`absolute inset-0 bg-cover bg-center transition-opacity duration-500 ${mapLoaded ? 'opacity-100' : 'opacity-0'}`}>
+                <img 
+                  src={mapImageUrl} 
+                  alt="Map showing your current location" 
+                  className="w-full h-full object-cover"
+                  onLoad={() => setMapLoaded(true)}
+                  onError={() => setMapError(true)}
+                />
+              </div>
+            )}
             
             {!mapLoaded && (
               <div className="absolute inset-0 flex items-center justify-center">
