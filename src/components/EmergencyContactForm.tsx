@@ -51,7 +51,14 @@ const EmergencyContactForm: React.FC<EmergencyContactFormProps> = ({ contacts, s
   });
 
   const onSubmit = (data: ContactFormValues) => {
-    const updatedContacts = [...contacts, data];
+    // Ensure data is fully typed as Contact (with required fields)
+    const newContact: Contact = {
+      name: data.name,
+      phone: data.phone,
+      relation: data.relation
+    };
+    
+    const updatedContacts = [...contacts, newContact];
     setContacts(updatedContacts);
     
     // Save to localStorage

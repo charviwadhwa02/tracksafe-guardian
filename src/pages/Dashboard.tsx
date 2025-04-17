@@ -2,8 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import EmergencyContactForm, { Contact } from '@/components/EmergencyContactForm';
 import LocationTracker from '@/components/LocationTracker';
 import NearbyHospitals from '@/components/NearbyHospitals';
@@ -58,8 +56,6 @@ const Dashboard = () => {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Navbar />
-        
         <main className="flex-1 container mx-auto px-4 py-20 flex items-center justify-center">
           <motion.div 
             className="max-w-md w-full bg-white rounded-2xl shadow-lg p-8 text-center"
@@ -89,16 +85,12 @@ const Dashboard = () => {
             </div>
           </motion.div>
         </main>
-        
-        <Footer />
       </div>
     );
   }
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <Navbar />
-      
       <main className="flex-1 container mx-auto px-4 py-8">
         <motion.div 
           className="grid grid-cols-1 lg:grid-cols-3 gap-6"
@@ -191,8 +183,6 @@ const Dashboard = () => {
           </motion.div>
         </motion.div>
       </main>
-      
-      <Footer />
     </div>
   );
 };

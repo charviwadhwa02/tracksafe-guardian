@@ -6,8 +6,6 @@ import { useToast } from '@/hooks/use-toast';
 import { Eye, EyeOff, Lock, Mail, User, UserPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -56,8 +54,6 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-white">
-      <Navbar />
-      
       <main className="flex-1 container mx-auto px-4 py-16 flex items-center justify-center">
         <div className="w-full max-w-md">
           <motion.div 
@@ -162,8 +158,6 @@ const Auth = () => {
           </motion.div>
         </div>
       </main>
-      
-      <Footer />
     </div>
   );
 };

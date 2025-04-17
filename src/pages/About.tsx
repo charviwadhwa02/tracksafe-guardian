@@ -1,9 +1,6 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Star, Shield, Heart, MapPin, Car, Activity } from 'lucide-react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from '@/components/ui/carousel';
 
 const About = () => {
@@ -91,8 +88,6 @@ const About = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
-      
       <main className="pt-16">
         {/* Hero Section */}
         <section className="py-20 px-4 bg-gradient-to-br from-primary/10 to-secondary/5">
@@ -264,8 +259,6 @@ const About = () => {
           </div>
         </section>
       </main>
-      
-      <Footer />
     </div>
   );
 };
