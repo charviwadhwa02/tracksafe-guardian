@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -7,12 +8,25 @@ import EmergencyContactForm, { Contact } from '@/components/EmergencyContactForm
 import LocationTracker from '@/components/LocationTracker';
 import NearbyHospitals from '@/components/NearbyHospitals';
 import AccidentDetection from '@/components/AccidentDetection';
+import HealthMonitoring from '@/components/HealthMonitoring';
+import LiveMap from '@/components/LiveMap';
+import { Button } from '@/components/ui/button';
+import { AlertCircle } from 'lucide-react';
 
 const Dashboard = () => {
   const { toast } = useToast();
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [isTracking, setIsTracking] = useState(false);
   const [contacts, setContacts] = useState<Contact[]>([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  
+  // Check if user is logged in
+  useEffect(() => {
+    const user = localStorage.getItem('tracksafe_user');
+    if (user) {
+      setIsAuthenticated(true);
+    }
+  }, []);
   
   // Load saved contacts from localStorage on mount
   useEffect(() => {
@@ -39,14 +53,65 @@ const Dashboard = () => {
       description: "TrackSafe has stopped monitoring your location.",
     });
   };
+  
+  // If not authenticated, show login message
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        
+        <main className="flex-1 container mx-auto px-4 py-20 flex items-center justify-center">
+          <motion.div 
+            className="max-w-md w-full bg-white rounded-2xl shadow-lg p-8 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <AlertCircle className="h-16 w-16 text-amber-500 mx-auto mb-6" />
+            <h2 className="text-2xl font-bold mb-4">Login Required</h2>
+            <p className="text-muted-foreground mb-6">
+              You need to log in to access the TrackSafe dashboard and its features.
+            </p>
+            <div className="space-y-3">
+              <Button 
+                className="w-full" 
+                onClick={() => window.location.href = '/auth'}
+              >
+                Log In
+              </Button>
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={() => window.location.href = '/'}
+              >
+                Return to Home
+              </Button>
+            </div>
+          </motion.div>
+        </main>
+        
+        <Footer />
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
       
       <main className="flex-1 container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-6">
+        <motion.div 
+          className="grid grid-cols-1 lg:grid-cols-3 gap-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.div 
+            className="lg:col-span-2 space-y-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
             <div className="bg-white rounded-xl shadow-md p-6 border border-border">
               <h2 className="text-2xl font-semibold mb-4">Current Status</h2>
               <div className="flex items-center justify-between mb-6">
@@ -66,19 +131,20 @@ const Dashboard = () => {
                 </div>
                 <div>
                   {isTracking ? (
-                    <button
+                    <Button
                       onClick={stopTracking}
-                      className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full transition-colors"
+                      variant="destructive"
+                      className="rounded-full"
                     >
                       Stop Tracking
-                    </button>
+                    </Button>
                   ) : (
-                    <button
+                    <Button
                       onClick={startTracking}
-                      className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-full transition-colors"
+                      className="rounded-full"
                     >
                       Start Tracking
-                    </button>
+                    </Button>
                   )}
                 </div>
               </div>
@@ -89,16 +155,32 @@ const Dashboard = () => {
               />
             </div>
             
-            <AccidentDetection 
-              isTracking={isTracking} 
+            <LiveMap
+              isTracking={isTracking}
               location={location}
-              contacts={contacts}
             />
             
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <AccidentDetection 
+                isTracking={isTracking} 
+                location={location}
+                contacts={contacts}
+              />
+              
+              <HealthMonitoring 
+                isTracking={isTracking} 
+              />
+            </div>
+            
             <NearbyHospitals location={location} />
-          </div>
+          </motion.div>
           
-          <div className="space-y-6">
+          <motion.div 
+            className="space-y-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
             <div className="bg-white rounded-xl shadow-md p-6 border border-border">
               <h2 className="text-2xl font-semibold mb-4">Emergency Contacts</h2>
               <EmergencyContactForm 
@@ -106,8 +188,8 @@ const Dashboard = () => {
                 setContacts={setContacts} 
               />
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </main>
       
       <Footer />
